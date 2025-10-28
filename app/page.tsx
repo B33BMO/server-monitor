@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import HeaderStats from "../components/HeaderStats";
-import OverviewCards from "../components/OverviewCards";
-import HealthGraph from "../components/HealthGraph";
+import HealthAndOverviewPanel from "../components/HealthAndOverviewPanel";
+import TopAffectedPanel from "../components/TopAffectedPanel";
+import DownEventsPanel from "../components/DownEventsPanel";
+import ByService from "../components/ByService";
 
 type ApiData = {
   meta: {
@@ -32,7 +34,6 @@ type ApiData = {
 export default function Page() {
   const [data, setData] = useState<ApiData | null>(null);
 
-  // polling fetch
   useEffect(() => {
     let alive = true;
 
@@ -48,49 +49,63 @@ export default function Page() {
     }
 
     load();
-
-    const id = setInterval(load, 5000); // 5s refresh
+    const id = setInterval(load, 5000);
     return () => {
       alive = false;
       clearInterval(id);
     };
   }, []);
 
-  // Skeleton while loading
   if (!data) {
     return (
-      <main className="animate-pulse text-sm text-zinc-600 font-mono">
-        <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4 backdrop-blur-md mb-4 h-20" />
-        <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
-          <div className="rounded-2xl border border-white/10 bg-white/5 h-32" />
-          <div className="rounded-2xl border border-white/10 bg-white/5 h-32" />
-          <div className="rounded-2xl border border-white/10 bg-white/5 h-32" />
-          <div className="2xl:col-span-3 lg:col-span-2 col-span-1 rounded-2xl border border-white/10 bg-white/5 h-48" />
+      <main className="h-[100dvh] w-[100dvw] flex items-center justify-center text-[0.75rem] font-mono text-[var(--text-dim)] bg-[radial-gradient(circle_at_20%_20%,rgba(0,200,255,0.08)_0%,rgba(0,0,0,0)_60%),linear-gradient(180deg,var(--bg-base-top)_0%,var(--bg-base-bottom)_100%)] relative">
+        <div className="absolute inset-0 pointer-events-none opacity-[0.07] mix-blend-screen bg-[repeating-linear-gradient(to_bottom,rgba(255,255,255,0.03)_0px,rgba(0,0,0,0)_1px,rgba(0,0,0,0)_2px)]" />
+        <div className="text-[var(--text-dim)] opacity-60 animate-pulse">
+          loading status…
         </div>
-        <div className="rounded-2xl border border-white/10 bg-white/5 h-64 mt-4" />
       </main>
     );
   }
 
+  const alertMode = data.summary.downCount > 0;
+
   return (
-    <main className="space-y-4">
-      <HeaderStats
-        lastChecked={data.meta.lastChecked}
-        nextCheck={data.meta.nextCheck}
-        downCount={data.summary.downCount}
-        uptimePct={data.meta.uptimePct}
-        avgPingMs={data.meta.avgPingMs}
-        alertActive={data.meta.alertActive}
-      />
+    <main
+      className={[
+        "h-[100dvh] w-[100dvw] overflow-hidden",
+        "text-[0.75rem] leading-relaxed font-mono text-[var(--text-main)]",
+        alertMode
+          ? "bg-[radial-gradient(circle_at_20%_20%,rgba(255,50,50,0.15)_0%,rgba(0,0,0,0)_60%),linear-gradient(180deg,#1a0000_0%,#0a0000_100%)]"
+          : "bg-[radial-gradient(circle_at_20%_20%,rgba(0,200,255,0.08)_0%,rgba(0,0,0,0)_60%),linear-gradient(180deg,#0b0e14_0%,#141821_100%)]",
+        "relative transition-all duration-700",
+      ].join(" ")}
+    >
+      <div className="absolute inset-0 pointer-events-none opacity-[0.07] mix-blend-screen bg-[repeating-linear-gradient(to_bottom,rgba(255,255,255,0.03)_0px,rgba(0,0,0,0)_1px,rgba(0,0,0,0)_2px)]" />
 
-      <OverviewCards
-        summary={data.summary}
-        downServices={data.downServices}
-        byService={data.byService}
-        topAffected={data.topAffected}
-      />
+      <div className="relative z-[1] flex flex-col gap-4 h-full px-4 md:px-6 lg:px-8 py-4 md:py-6 lg:py-8 min-h-0">
 
-      <HealthGraph history={data.healthHistory} />
+
+        <div
+          className={[
+            "grid gap-4 flex-1 min-h-0",
+            "xl:grid-cols-2 xl:grid-rows-2",
+            "grid-cols-1 grid-rows-[auto_auto_auto_auto]",
+          ].join(" ")}
+        >
+          <HealthAndOverviewPanel
+            summary={data.summary}
+            meta={{
+              uptimePct: data.meta.uptimePct,
+              avgPingMs: data.meta.avgPingMs,
+            }}
+            history={data.healthHistory}
+            alertMode={alertMode}
+          />
+          <TopAffectedPanel data={data.topAffected} alertMode={alertMode} />
+          <DownEventsPanel rows={data.downServices} alertMode={alertMode} />
+          <ByService data={data.byService} alertMode={alertMode} />
+        </div>
+      </div>
     </main>
   );
 }

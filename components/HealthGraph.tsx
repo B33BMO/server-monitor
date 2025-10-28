@@ -1,128 +1,172 @@
-// components/HealthGraph.tsx
-type Point = {
+import React from "react";
+
+export type Point = {
   ts: number;
   upCount: number;
   totalCount: number;
   avgPingMs: number;
 };
 
-function uptimePct(p: Point) {
-  if (!p.totalCount) return 0;
-  return (p.upCount / p.totalCount) * 100;
+function toPct(p: Point) {
+  return p.totalCount ? (p.upCount / p.totalCount) * 100 : 0;
 }
 
-export default function HealthGraph({ history }: { history: Point[] }) {
-  // Normalize heights 0-100 → 0-100%
-  // We'll render each point as a vertical bar.
+// Helper to build smooth/straight line depending on data count
+function buildSmoothPath(coords: [number, number][]) {
+  if (coords.length === 0) return "";
+  if (coords.length === 1) {
+    const [x, y] = coords[0];
+    return `M ${x},${y}`;
+  }
+  if (coords.length === 2) {
+    const [x1, y1] = coords[0];
+    const [x2, y2] = coords[1];
+    return `M ${x1},${y1} L ${x2},${y2}`;
+  }
+  let d = `M ${coords[0][0]},${coords[0][1]}`;
+  for (let i = 0; i < coords.length - 1; i++) {
+    const [x1, y1] = coords[i];
+    const [x2, y2] = coords[i + 1];
+    const midX = (x1 + x2) / 2;
+    d += ` Q ${midX},${y1} ${x2},${y2}`;
+  }
+  return d;
+}
+
+// Only draw fill if we have 3+ points
+function buildFillPath(coords: [number, number][], width: number, height: number) {
+  if (coords.length < 3) return "";
+  const first = coords[0];
+  const last = coords[coords.length - 1];
+  let d = buildSmoothPath(coords);
+  d += ` L ${last[0]} ${height}`;
+  d += ` L ${first[0]} ${height} Z`;
+  return d;
+}
+
+export default function HealthGraph({
+  history,
+  alertMode = false,
+}: {
+  history: Point[];
+  alertMode?: boolean;
+}) {
+  const width = 900;
+  const height = 220;
+
+  if (!history || history.length === 0) {
+    return (
+      <div className="text-[0.7rem] text-[var(--text-dim)] font-mono">
+        No data yet…
+      </div>
+    );
+  }
+
+  const sorted = [...history].sort((a, b) => a.ts - b.ts);
+  const pcts = sorted.map(toPct);
+  const stepX = pcts.length > 1 ? width / (pcts.length - 1) : width / 2;
+
+  const coords: [number, number][] = pcts.map((pct, i) => {
+    const x = i * stepX;
+    const y = height - (pct / 100) * height;
+    return [x, y];
+  });
+
+  const lineD = buildSmoothPath(coords);
+  const fillD = buildFillPath(coords, width, height);
+
+  const glowRGB = alertMode ? "255,50,50" : "0,200,255";
+  const borderColor = alertMode
+    ? "rgba(255,0,0,0.4)"
+    : "rgba(0,200,255,0.3)";
+  const bgColor = alertMode
+    ? "rgba(30,0,0,0.45)"
+    : "rgba(0,20,30,0.45)";
+
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-md shadow-[0_20px_80px_-10px_rgba(0,255,174,0.18)] flex flex-col">
-      <h2 className="text-xs font-semibold text-white/70 mb-3 tracking-wide">
-        SYSTEM HEALTH OVER TIME (Combined View)
-      </h2>
-
-      {history.length === 0 ? (
-        <div className="text-[0.8rem] font-mono text-zinc-600">
-          No data yet...
-        </div>
-      ) : (
-        <>
-          {/* Stats row */}
-          {(() => {
-            const cur = history[history.length - 1];
-            const curPct = uptimePct(cur);
-            const histPctAvg =
-              history.reduce((acc, p) => acc + uptimePct(p), 0) /
-              history.length;
-            const avgPingHist =
-              history.reduce((acc, p) => acc + p.avgPingMs, 0) /
-              history.length;
-
-            return (
-              <div className="mb-4 grid grid-cols-1 md:grid-cols-2 gap-2 text-[0.75rem] font-mono leading-relaxed">
-                <div className="space-y-1">
-                  <div className="text-white flex flex-wrap gap-x-2 gap-y-1">
-                    <span className="text-emerald-400">
-                      Services UP: {cur.upCount}/{cur.totalCount}
-                    </span>
-                    <span
-                      className={
-                        curPct >= 95
-                          ? "text-emerald-400"
-                          : curPct < 80
-                          ? "text-red-400"
-                          : "text-yellow-400"
-                      }
-                    >
-                      Uptime: {curPct.toFixed(1)}%
-                    </span>
-                    <span className="text-cyan-400">
-                      Avg Ping: {cur.avgPingMs.toFixed(1)}ms
-                    </span>
-                  </div>
-                  <div className="text-zinc-500 flex flex-wrap gap-x-2 gap-y-1">
-                    <span>
-                      Historical Uptime: {histPctAvg.toFixed(1)}%
-                    </span>
-                    <span>
-                      Avg Ping: {avgPingHist.toFixed(1)}ms
-                    </span>
-                  </div>
-                </div>
-              </div>
-            );
-          })()}
-
-          {/* Graph bars */}
-          <div className="flex h-32 w-full items-end gap-[2px]">
-            {history.map((p, idx) => {
-              const pct = uptimePct(p); // 0-100
-              const h = Math.max(2, Math.round((pct / 100) * 100)); // %
-              const color =
-                pct >= 95
-                  ? "bg-emerald-400"
-                  : pct < 80
-                  ? "bg-red-500"
-                  : "bg-yellow-400";
-
+    <div
+      className={[
+        "rounded-xl border overflow-hidden",
+        "p-0 bg-transparent", // removes padding + black halo
+        alertMode
+          ? "border-red-500/40 shadow-[0_0_30px_rgba(255,0,0,0.15)]"
+          : "border-cyan-500/30 shadow-[0_0_30px_rgba(0,200,255,0.15)]",
+      ].join(" ")}
+    >
+      {/* inner fill panel */}
+      <div
+        className={[
+          "rounded-lg border",
+          "overflow-hidden",
+        ].join(" ")}
+        style={{
+          borderColor,
+          background: bgColor,
+          boxShadow: alertMode
+            ? "0 0 40px rgba(255,0,0,0.2) inset, 0 0 80px rgba(255,0,0,0.05)"
+            : "0 0 40px rgba(0,200,255,0.2) inset, 0 0 80px rgba(0,200,255,0.05)",
+        }}
+      >
+        <svg
+          width="100%"
+          height="100%"
+          viewBox={`0 0 ${width} ${height}`}
+          preserveAspectRatio="none"
+          className="block"
+        >
+          {/* grid */}
+          <g stroke="rgba(255,255,255,0.07)" strokeWidth={1}>
+            {[0, 0.25, 0.5, 0.75, 1].map((t, i) => {
+              const y = t * height;
               return (
-                <div
-                  key={idx}
-                  className={`flex-1 ${color} rounded-t-[2px]`}
-                  style={{
-                    height: `${h}%`,
-                    minWidth: "2px",
-                  }}
-                  title={`Uptime ${pct.toFixed(
-                    1
-                  )}% | Avg ${p.avgPingMs.toFixed(1)}ms`}
+                <line
+                  key={i}
+                  x1={0}
+                  x2={width}
+                  y1={y}
+                  y2={y}
+                  strokeDasharray="2 4"
                 />
               );
             })}
-          </div>
+          </g>
 
-          {/* X-axis labels (Now / mins ago) */}
-          <div className="mt-2 flex justify-between text-[0.6rem] font-mono text-zinc-600">
-            <div>Past</div>
-            <div>Now</div>
-          </div>
+          {/* fill area */}
+          {fillD && (
+            <path
+              d={fillD}
+              fill={`rgba(${glowRGB},0.08)`}
+            />
+          )}
 
-          {/* Legend */}
-          <div className="mt-4 text-[0.7rem] font-mono text-zinc-500 flex flex-wrap gap-4">
-            <div className="flex items-center gap-1">
-              <span className="inline-block h-3 w-3 rounded-sm bg-emerald-400" />
-              <span>&gt;95% Good</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <span className="inline-block h-3 w-3 rounded-sm bg-yellow-400" />
-              <span>80-95% Warning</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <span className="inline-block h-3 w-3 rounded-sm bg-red-500" />
-              <span>&lt;80% Critical</span>
-            </div>
-          </div>
-        </>
-      )}
+          {/* main line */}
+          <path
+            d={lineD}
+            fill="none"
+            stroke={`rgba(${glowRGB},0.9)`}
+            strokeWidth={2}
+            style={{
+              filter: `drop-shadow(0 0 6px rgba(${glowRGB},0.8))
+                       drop-shadow(0 0 18px rgba(${glowRGB},0.4))`,
+            }}
+          />
+
+          {/* points */}
+          {coords.map(([x, y], idx) => (
+            <circle
+              key={idx}
+              cx={x}
+              cy={y}
+              r={4}
+              fill={`rgba(${glowRGB},1)`}
+              style={{
+                filter: `drop-shadow(0 0 6px rgba(${glowRGB},0.9))
+                         drop-shadow(0 0 14px rgba(${glowRGB},0.5))`,
+              }}
+            />
+          ))}
+        </svg>
+      </div>
     </div>
   );
 }

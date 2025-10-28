@@ -1,7 +1,15 @@
 // components/OverviewCards.tsx
+
 import ByService from "./ByService";
 import TopAffected from "./TopAffected";
 import DownTable from "./DownTable";
+
+const panelClasses = [
+  "rounded-2xl border border-[var(--panel-border)]",
+  "bg-[var(--panel-bg)] backdrop-blur-md",
+  "shadow-[var(--panel-shadow-main),var(--panel-shadow-inner)]",
+  "p-4 flex flex-col font-mono text-[0.75rem] leading-relaxed",
+].join(" ");
 
 type OverviewCardsProps = {
   summary: {
@@ -24,52 +32,56 @@ export default function OverviewCards({
     summary.trend === "up" ? "↗" : summary.trend === "down" ? "↘" : "→";
 
   const statusTitle =
-    summary.downCount === 0 ? "ALL SERVICES ONLINE" : "ALERT: SERVICES DOWN";
+    summary.downCount === 0
+      ? "ALL SERVICES ONLINE"
+      : "ALERT: SERVICES DOWN";
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4">
-      {/* Overview card */}
-      <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-md shadow-[0_20px_80px_-10px_rgba(0,255,174,0.18)] flex flex-col">
-        <h2 className="text-xs font-semibold text-white/70 mb-2 tracking-wide">
+      {/* OVERVIEW */}
+      <div className={panelClasses}>
+        <h2 className="text-[0.7rem] font-semibold tracking-wide text-[var(--text-dim)] mb-2 cyber-header">
           OVERVIEW
         </h2>
-        <div className="text-[0.8rem] font-mono leading-relaxed">
-          <div className="text-white font-semibold text-[0.75rem]">
+
+        <div className="text-[0.8rem] leading-relaxed">
+          <div className="text-[var(--text-main)] font-semibold text-[0.75rem]">
             {statusTitle}
           </div>
-          <div className="text-emerald-400 mt-2">
-            UP: {summary.upCount}{" "}
-            <span className="text-zinc-600 mx-1">|</span>
+
+          <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[0.75rem]">
+            <span className="text-cyan-300">
+              UP: {summary.upCount}
+            </span>
             <span className="text-red-400">
               DOWN: {summary.downCount}
-            </span>{" "}
-            <span className="text-zinc-600 mx-1">|</span>
-            <span className="text-cyan-400">Trend: {trendArrow}</span>
+            </span>
+            <span className="text-[var(--text-dim)]">
+              Trend:{" "}
+              <span
+                className={
+                  summary.trend === "up"
+                    ? "text-cyan-300"
+                    : summary.trend === "down"
+                    ? "text-red-400"
+                    : "text-yellow-300"
+                }
+              >
+                {trendArrow}
+              </span>
+            </span>
           </div>
         </div>
       </div>
 
-      {/* By Service card */}
-      <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-md shadow-[0_20px_80px_-10px_rgba(0,255,174,0.18)] flex flex-col">
-        <h2 className="text-xs font-semibold text-white/70 mb-2 tracking-wide">
-          BY SERVICE
-        </h2>
-        <ByService data={byService} />
-      </div>
+      {/* BY SERVICE */}
+      <ByService data={byService} />
 
-      {/* Top Affected card */}
-      <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-md shadow-[0_20px_80px_-10px_rgba(0,255,174,0.18)] flex flex-col">
-        <h2 className="text-xs font-semibold text-white/70 mb-2 tracking-wide">
-          TOP AFFECTED
-        </h2>
-        <TopAffected data={topAffected} />
-      </div>
+      {/* TOP AFFECTED */}
+      <TopAffected data={topAffected} />
 
-      {/* Down Events card (full width under on large screens) */}
-      <div className="2xl:col-span-3 lg:col-span-2 col-span-1 rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-md shadow-[0_20px_80px_-10px_rgba(0,255,174,0.18)] flex flex-col">
-        <h2 className="text-xs font-semibold text-white/70 mb-2 tracking-wide">
-          DOWN EVENTS
-        </h2>
+      {/* DOWN EVENTS - full width on wrap */}
+      <div className="2xl:col-span-3 lg:col-span-2 col-span-1">
         <DownTable rows={downServices} />
       </div>
     </div>

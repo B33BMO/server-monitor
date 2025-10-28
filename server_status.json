@@ -1,0 +1,656 @@
+{
+  "meta": {
+    "lastChecked": "00:10:33",
+    "nextCheck": "00:12:07",
+    "uptimePct": 55.172413793103445,
+    "avgPingMs": 1829.3232758620643,
+    "alertActive": false
+  },
+  "summary": {
+    "upCount": 64,
+    "downCount": 52,
+    "trend": "flat"
+  },
+  "downServices": [
+    {
+      "customer": "A3C",
+      "service": "admin",
+      "downForSec": 207
+    },
+    {
+      "customer": "A3C",
+      "service": "dc1",
+      "downForSec": 207
+    },
+    {
+      "customer": "A3C",
+      "service": "pm1",
+      "downForSec": 207
+    },
+    {
+      "customer": "A3C",
+      "service": "vpn",
+      "downForSec": 207
+    },
+    {
+      "customer": "AMO",
+      "service": "admin",
+      "downForSec": 207
+    },
+    {
+      "customer": "AMO",
+      "service": "dc1",
+      "downForSec": 207
+    },
+    {
+      "customer": "APX",
+      "service": "admin",
+      "downForSec": 207
+    },
+    {
+      "customer": "APX",
+      "service": "dc1",
+      "downForSec": 207
+    },
+    {
+      "customer": "APX",
+      "service": "vpn",
+      "downForSec": 207
+    },
+    {
+      "customer": "CAH",
+      "service": "admin",
+      "downForSec": 207
+    },
+    {
+      "customer": "CAH",
+      "service": "dc1",
+      "downForSec": 207
+    },
+    {
+      "customer": "CAH",
+      "service": "pm1",
+      "downForSec": 207
+    },
+    {
+      "customer": "CAH",
+      "service": "vpn",
+      "downForSec": 207
+    },
+    {
+      "customer": "CAP",
+      "service": "admin",
+      "downForSec": 207
+    },
+    {
+      "customer": "CAP",
+      "service": "dc1",
+      "downForSec": 207
+    },
+    {
+      "customer": "CAP",
+      "service": "nas1",
+      "downForSec": 207
+    },
+    {
+      "customer": "CAP",
+      "service": "pm2",
+      "downForSec": 207
+    },
+    {
+      "customer": "CAP",
+      "service": "vpn",
+      "downForSec": 207
+    },
+    {
+      "customer": "CAS",
+      "service": "admin",
+      "downForSec": 207
+    },
+    {
+      "customer": "CAS",
+      "service": "dc1",
+      "downForSec": 207
+    },
+    {
+      "customer": "CAS",
+      "service": "pm1",
+      "downForSec": 27406
+    },
+    {
+      "customer": "CAS",
+      "service": "vpn",
+      "downForSec": 207
+    },
+    {
+      "customer": "CFI",
+      "service": "admin",
+      "downForSec": 207
+    },
+    {
+      "customer": "CFI",
+      "service": "dc1",
+      "downForSec": 207
+    },
+    {
+      "customer": "CFI",
+      "service": "nas1",
+      "downForSec": 207
+    },
+    {
+      "customer": "CFI",
+      "service": "pm2",
+      "downForSec": 207
+    },
+    {
+      "customer": "CFI",
+      "service": "vpn",
+      "downForSec": 207
+    },
+    {
+      "customer": "COR",
+      "service": "admin",
+      "downForSec": 207
+    },
+    {
+      "customer": "COR",
+      "service": "dc1",
+      "downForSec": 207
+    },
+    {
+      "customer": "COR",
+      "service": "pm1",
+      "downForSec": 207
+    },
+    {
+      "customer": "COR",
+      "service": "vpn",
+      "downForSec": 207
+    },
+    {
+      "customer": "CYB",
+      "service": "pm1",
+      "downForSec": 207
+    },
+    {
+      "customer": "GRT",
+      "service": "admin",
+      "downForSec": 27406
+    },
+    {
+      "customer": "GRT",
+      "service": "dc1",
+      "downForSec": 27406
+    },
+    {
+      "customer": "GRT",
+      "service": "vpn",
+      "downForSec": 27406
+    },
+    {
+      "customer": "RES",
+      "service": "admin",
+      "downForSec": 207
+    },
+    {
+      "customer": "TIB",
+      "service": "admin",
+      "downForSec": 207
+    },
+    {
+      "customer": "TIB",
+      "service": "nas1",
+      "downForSec": 207
+    },
+    {
+      "customer": "TIB",
+      "service": "pm1",
+      "downForSec": 207
+    },
+    {
+      "customer": "TIB",
+      "service": "vpn",
+      "downForSec": 207
+    },
+    {
+      "customer": "TMC",
+      "service": "admin",
+      "downForSec": 207
+    },
+    {
+      "customer": "TMC",
+      "service": "dc1",
+      "downForSec": 207
+    },
+    {
+      "customer": "TMC",
+      "service": "nas1",
+      "downForSec": 207
+    },
+    {
+      "customer": "TMC",
+      "service": "vpn",
+      "downForSec": 207
+    },
+    {
+      "customer": "TMI",
+      "service": "admin",
+      "downForSec": 207
+    },
+    {
+      "customer": "TMI",
+      "service": "dc1",
+      "downForSec": 207
+    },
+    {
+      "customer": "TMI",
+      "service": "pm1",
+      "downForSec": 207
+    },
+    {
+      "customer": "TMI",
+      "service": "pm2",
+      "downForSec": 27406
+    },
+    {
+      "customer": "TMI",
+      "service": "vpn",
+      "downForSec": 207
+    },
+    {
+      "customer": "TSI",
+      "service": "admin",
+      "downForSec": 207
+    },
+    {
+      "customer": "TSI",
+      "service": "dc1",
+      "downForSec": 207
+    },
+    {
+      "customer": "TSI",
+      "service": "pm2",
+      "downForSec": 207
+    }
+  ],
+  "byService": [
+    {
+      "service": "pm1",
+      "count": 7
+    },
+    {
+      "service": "pm2",
+      "count": 4
+    },
+    {
+      "service": "dc1",
+      "count": 12
+    },
+    {
+      "service": "nas1",
+      "count": 4
+    },
+    {
+      "service": "vpn",
+      "count": 11
+    },
+    {
+      "service": "admin",
+      "count": 14
+    }
+  ],
+  "topAffected": [
+    {
+      "customer": "CAP",
+      "affected": [
+        "admin",
+        "dc1",
+        "nas1",
+        "pm2",
+        "vpn"
+      ]
+    },
+    {
+      "customer": "CFI",
+      "affected": [
+        "admin",
+        "dc1",
+        "nas1",
+        "pm2",
+        "vpn"
+      ]
+    },
+    {
+      "customer": "TMI",
+      "affected": [
+        "admin",
+        "dc1",
+        "pm1",
+        "pm2",
+        "vpn"
+      ]
+    },
+    {
+      "customer": "A3C",
+      "affected": [
+        "admin",
+        "dc1",
+        "pm1",
+        "vpn"
+      ]
+    },
+    {
+      "customer": "CAH",
+      "affected": [
+        "admin",
+        "dc1",
+        "pm1",
+        "vpn"
+      ]
+    },
+    {
+      "customer": "CAS",
+      "affected": [
+        "admin",
+        "dc1",
+        "pm1",
+        "vpn"
+      ]
+    },
+    {
+      "customer": "COR",
+      "affected": [
+        "admin",
+        "dc1",
+        "pm1",
+        "vpn"
+      ]
+    },
+    {
+      "customer": "TIB",
+      "affected": [
+        "admin",
+        "nas1",
+        "pm1",
+        "vpn"
+      ]
+    },
+    {
+      "customer": "TMC",
+      "affected": [
+        "admin",
+        "dc1",
+        "nas1",
+        "vpn"
+      ]
+    },
+    {
+      "customer": "APX",
+      "affected": [
+        "admin",
+        "dc1",
+        "vpn"
+      ]
+    }
+  ],
+  "healthHistory": [
+    {
+      "ts": 1761600836.235428,
+      "upCount": 111,
+      "totalCount": 116,
+      "avgPingMs": 156.47931034482758
+    },
+    {
+      "ts": 1761600935.027572,
+      "upCount": 111,
+      "totalCount": 116,
+      "avgPingMs": 156.47931034482755
+    },
+    {
+      "ts": 1761601035.110694,
+      "upCount": 111,
+      "totalCount": 116,
+      "avgPingMs": 73.20517241379311
+    },
+    {
+      "ts": 1761601135.0369012,
+      "upCount": 111,
+      "totalCount": 116,
+      "avgPingMs": 73.20517241379311
+    },
+    {
+      "ts": 1761601235.412304,
+      "upCount": 0,
+      "totalCount": 116,
+      "avgPingMs": 142.39655172413785
+    },
+    {
+      "ts": 1761601336.2082932,
+      "upCount": 0,
+      "totalCount": 116,
+      "avgPingMs": 228.3793103448277
+    },
+    {
+      "ts": 1761601435.69337,
+      "upCount": 111,
+      "totalCount": 116,
+      "avgPingMs": 167.06120689655174
+    },
+    {
+      "ts": 1761601535.162973,
+      "upCount": 111,
+      "totalCount": 116,
+      "avgPingMs": 167.0612068965517
+    },
+    {
+      "ts": 1761601635.216063,
+      "upCount": 111,
+      "totalCount": 116,
+      "avgPingMs": 167.0612068965517
+    },
+    {
+      "ts": 1761601736.3065012,
+      "upCount": 111,
+      "totalCount": 116,
+      "avgPingMs": 165.8801724137931
+    },
+    {
+      "ts": 1761602295.738111,
+      "upCount": 0,
+      "totalCount": 116,
+      "avgPingMs": 1999.7999999999925
+    },
+    {
+      "ts": 1761602412.704727,
+      "upCount": 0,
+      "totalCount": 116,
+      "avgPingMs": 1999.7999999999925
+    },
+    {
+      "ts": 1761605446.239323,
+      "upCount": 0,
+      "totalCount": 116,
+      "avgPingMs": 1999.7999999999925
+    },
+    {
+      "ts": 1761607309.926689,
+      "upCount": 0,
+      "totalCount": 116,
+      "avgPingMs": 1999.7999999999925
+    },
+    {
+      "ts": 1761608269.84975,
+      "upCount": 0,
+      "totalCount": 116,
+      "avgPingMs": 1999.7999999999925
+    },
+    {
+      "ts": 1761609036.7678158,
+      "upCount": 0,
+      "totalCount": 116,
+      "avgPingMs": 1999.7999999999925
+    },
+    {
+      "ts": 1761609042.8959439,
+      "upCount": 0,
+      "totalCount": 116,
+      "avgPingMs": 1999.7999999999925
+    },
+    {
+      "ts": 1761612079.913693,
+      "upCount": 0,
+      "totalCount": 116,
+      "avgPingMs": 1999.7999999999925
+    },
+    {
+      "ts": 1761612696.85289,
+      "upCount": 0,
+      "totalCount": 116,
+      "avgPingMs": 1999.7999999999925
+    },
+    {
+      "ts": 1761612703.015502,
+      "upCount": 0,
+      "totalCount": 116,
+      "avgPingMs": 1999.7999999999925
+    },
+    {
+      "ts": 1761615587.716321,
+      "upCount": 0,
+      "totalCount": 116,
+      "avgPingMs": 1999.7999999999925
+    },
+    {
+      "ts": 1761616355.655065,
+      "upCount": 0,
+      "totalCount": 116,
+      "avgPingMs": 1999.7999999999925
+    },
+    {
+      "ts": 1761616361.79498,
+      "upCount": 0,
+      "totalCount": 116,
+      "avgPingMs": 1999.7999999999925
+    },
+    {
+      "ts": 1761619361.5117629,
+      "upCount": 0,
+      "totalCount": 116,
+      "avgPingMs": 1999.7999999999925
+    },
+    {
+      "ts": 1761620016.4733682,
+      "upCount": 0,
+      "totalCount": 116,
+      "avgPingMs": 1999.7999999999925
+    },
+    {
+      "ts": 1761620022.6166341,
+      "upCount": 0,
+      "totalCount": 116,
+      "avgPingMs": 1999.7999999999925
+    },
+    {
+      "ts": 1761621531.879319,
+      "upCount": 20,
+      "totalCount": 116,
+      "avgPingMs": 1922.6379310344773
+    },
+    {
+      "ts": 1761621533.451526,
+      "upCount": 51,
+      "totalCount": 116,
+      "avgPingMs": 1470.5732758620666
+    },
+    {
+      "ts": 1761621984.007562,
+      "upCount": 111,
+      "totalCount": 116,
+      "avgPingMs": 690.2603448275862
+    },
+    {
+      "ts": 1761623508.75552,
+      "upCount": 51,
+      "totalCount": 116,
+      "avgPingMs": 1408.724999999997
+    },
+    {
+      "ts": 1761623509.9179819,
+      "upCount": 82,
+      "totalCount": 116,
+      "avgPingMs": 893.0896551724123
+    },
+    {
+      "ts": 1761623672.049184,
+      "upCount": 111,
+      "totalCount": 116,
+      "avgPingMs": 689.4215517241377
+    },
+    {
+      "ts": 1761624755.304945,
+      "upCount": 110,
+      "totalCount": 116,
+      "avgPingMs": 571.6974137931034
+    },
+    {
+      "ts": 1761625143.3850062,
+      "upCount": 111,
+      "totalCount": 116,
+      "avgPingMs": 433.5939655172414
+    },
+    {
+      "ts": 1761625241.198406,
+      "upCount": 111,
+      "totalCount": 116,
+      "avgPingMs": 433.5939655172414
+    },
+    {
+      "ts": 1761625907.657035,
+      "upCount": 80,
+      "totalCount": 116,
+      "avgPingMs": 1175.3189655172398
+    },
+    {
+      "ts": 1761626071.796237,
+      "upCount": 111,
+      "totalCount": 116,
+      "avgPingMs": 905.2982758620687
+    },
+    {
+      "ts": 1761626237.7237902,
+      "upCount": 111,
+      "totalCount": 116,
+      "avgPingMs": 699.1189655172417
+    },
+    {
+      "ts": 1761626874.91891,
+      "upCount": 80,
+      "totalCount": 116,
+      "avgPingMs": 1180.0491379310329
+    },
+    {
+      "ts": 1761627334.977768,
+      "upCount": 111,
+      "totalCount": 116,
+      "avgPingMs": 729.75
+    },
+    {
+      "ts": 1761628034.695723,
+      "upCount": 64,
+      "totalCount": 116,
+      "avgPingMs": 2150.0525862068953
+    },
+    {
+      "ts": 1761628127.271589,
+      "upCount": 64,
+      "totalCount": 116,
+      "avgPingMs": 2150.0525862068953
+    },
+    {
+      "ts": 1761628233.351629,
+      "upCount": 64,
+      "totalCount": 116,
+      "avgPingMs": 1829.3232758620643
+    }
+  ]
+}

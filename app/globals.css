@@ -1,27 +1,116 @@
 @import "tailwindcss";
 
-/* Global aesthetic knobs */
+/* ===== Global theme variables ===== */
 :root {
-  --bg-main: #0b0e14;
-  --bg-panel: rgba(255, 255, 255, 0.06);
-  --bg-panel-strong: rgba(255, 255, 255, 0.12);
-  --fg-main: #e6e7ee;
-  --fg-dim: #9aa3b2;
-  --accent: #00ffae;
+  --bg-base-top: #0a0f18;        /* deep navy */
+  --bg-base-bottom: #1a2233;     /* desaturated blue-gray */
+  --bg-glow: rgba(0, 200, 255, 0.08); /* cyan glow */
+  --text-main: #e8f0ff;          /* icy off-white */
+  --text-dim: #6b7a99;           /* muted steel-blue */
+  --accent: #37e3ff;             /* cyan */
+  --accent-strong: #00c8ff;      /* punchy cyan */
+  --panel-bg: rgba(8,12,20,0.5); /* translucent dark panel */
+  --panel-border: rgba(255,255,255,0.07);
+  --panel-shadow-main: 0 30px 120px -10px rgba(0,200,255,0.15);
+  --panel-shadow-inner: 0 0 80px rgba(0,200,255,0.07) inset;
 }
 
+/* ===== Page background (navy + cyan bloom + noise) ===== */
+html,
+body {
+  min-height: 100%;
+  min-width: 100%;
+  color: var(--text-main);
+  background-color: #0a0f18;
+  background-image:
+    /* cyan bloom */
+    radial-gradient(
+      1000px 700px at 50% -10%,
+      var(--bg-glow) 0%,
+      rgba(0,0,0,0) 60%
+    ),
+    /* vertical gradient */
+    linear-gradient(
+      180deg,
+      var(--bg-base-top) 0%,
+      var(--bg-base-bottom) 100%
+    ),
+    /* film/noise texture */
+    repeating-radial-gradient(
+      circle at 20% 20%,
+      rgba(255,255,255,0.03) 0px,
+      rgba(0,0,0,0) 2px,
+      rgba(0,0,0,0) 3px
+    );
+  background-blend-mode: screen, normal, soft-light;
+
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    "Liberation Mono",
+    monospace;
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  image-rendering: pixelated;
+}
+
+/* tiny scanline vibe */
+body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.03) 0px,
+    rgba(0,0,0,0) 1px,
+    rgba(0,0,0,0) 2px
+  );
+  opacity: 0.07;
+  mix-blend-mode: screen;
+}
+
+/* soft text glow for headers */
+.cyber-header {
+  color: var(--accent);
+  text-shadow: 0 0 8px rgba(0,200,255,0.6),
+               0 0 32px rgba(0,200,255,0.4);
+}
 html,
 body {
   height: 100%;
   width: 100%;
-  background:
-    radial-gradient(1000px 700px at 50% -10%, rgba(0, 255, 174, 0.08) 0%, rgba(0, 0, 0, 0) 60%),
-    linear-gradient(180deg, #0b0e14 0%, #141821 100%);
-  color: var(--fg-main);
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-  text-rendering: optimizeLegibility;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* <-- absolutely stops any scrolling at the body level */
+  background: radial-gradient(circle at 20% 20%, rgba(0, 200, 255, 0.08) 0%, rgba(0, 0, 0, 0) 60%),
+              linear-gradient(180deg, var(--bg-base-top) 0%, var(--bg-base-bottom) 100%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: radial-gradient(circle at 20% 20%, rgba(0, 200, 255, 0.08) 0%, rgba(0, 0, 0, 0) 60%),
+              linear-gradient(180deg, var(--bg-base-top) 0%, var(--bg-base-bottom) 100%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
-* {
-  -webkit-font-smoothing: antialiased;
+/* mobile + macOS Safari fix for 100vh weirdness */
+main {
+  height: 100dvh !important; /* use dynamic viewport height instead of static 100vh */
+  width: 100dvw !important;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
