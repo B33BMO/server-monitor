@@ -101,9 +101,9 @@ export default function Page() {
             history={data.healthHistory}
             alertMode={alertMode}
           />
-          <TopAffectedPanel data={data.topAffected} alertMode={alertMode} />
+         
           <DownEventsPanel rows={data.downServices} alertMode={alertMode} />
-          <ByService data={data.byService} alertMode={alertMode} />
+         
         </div>
       </div>
     </main>
