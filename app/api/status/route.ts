@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import fs from "node:fs";
 
-const STATUS_JSON_PATH = "/Users/brandonbischoff/server-monitor/server_status.json";
+const STATUS_JSON_PATH = "/tmp/server_status.json";
 
 export async function GET() {
   try {

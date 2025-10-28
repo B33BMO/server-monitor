@@ -30,7 +30,7 @@ CHECK_INTERVAL = int(os.getenv("SERVER_CHECK_INTERVAL", "100"))  # how often to 
 MAX_WORKERS = int(os.getenv("SERVER_MAX_WORKERS", "32"))          # max concurrent pings
 CACHE_TIMEOUT = int(os.getenv("SERVER_CACHE_TTL", "300"))         # how long a known-good UP result is trusted
 DOWN_BACKOFF_MAX = int(os.getenv("SERVER_BACKOFF_MAX", "300"))    # max backoff cap for dead hosts
-STATUS_JSON_PATH = os.getenv("SERVER_STATUS_PATH", "/Users/brandonbischoff/server-monitor/server_status.json")
+STATUS_JSON_PATH = os.getenv("SERVER_STATUS_PATH", "/tmp/server_status.json")
 
 GRAPH_WIDTH = 60
 HISTORY_SIZE = GRAPH_WIDTH  # we keep last N data points

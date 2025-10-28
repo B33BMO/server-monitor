@@ -11,7 +11,7 @@ function toPct(p: Point) {
   return p.totalCount ? (p.upCount / p.totalCount) * 100 : 0;
 }
 
-// Helper to build smooth/straight line depending on data count
+// smooth-ish line builder
 function buildSmoothPath(coords: [number, number][]) {
   if (coords.length === 0) return "";
   if (coords.length === 1) {
@@ -23,6 +23,7 @@ function buildSmoothPath(coords: [number, number][]) {
     const [x2, y2] = coords[1];
     return `M ${x1},${y1} L ${x2},${y2}`;
   }
+
   let d = `M ${coords[0][0]},${coords[0][1]}`;
   for (let i = 0; i < coords.length - 1; i++) {
     const [x1, y1] = coords[i];
@@ -33,8 +34,12 @@ function buildSmoothPath(coords: [number, number][]) {
   return d;
 }
 
-// Only draw fill if we have 3+ points
-function buildFillPath(coords: [number, number][], width: number, height: number) {
+// fill path only if >=3 pts
+function buildFillPath(
+  coords: [number, number][],
+  width: number,
+  height: number
+) {
   if (coords.length < 3) return "";
   const first = coords[0];
   const last = coords[coords.length - 1];
@@ -51,8 +56,9 @@ export default function HealthGraph({
   history: Point[];
   alertMode?: boolean;
 }) {
-  const width = 900;
-  const height = 220;
+  // logical canvas size for math
+  const viewW = 900;
+  const viewH = 260;
 
   if (!history || history.length === 0) {
     return (
@@ -62,19 +68,25 @@ export default function HealthGraph({
     );
   }
 
+  // sort chronologically so left→right is time
   const sorted = [...history].sort((a, b) => a.ts - b.ts);
   const pcts = sorted.map(toPct);
-  const stepX = pcts.length > 1 ? width / (pcts.length - 1) : width / 2;
+
+  // x spacing in the logical viewbox
+  const stepX =
+    pcts.length > 1 ? viewW / (pcts.length - 1) : viewW / 2;
 
   const coords: [number, number][] = pcts.map((pct, i) => {
     const x = i * stepX;
-    const y = height - (pct / 100) * height;
+    // flip Y so 100% uptime is at the top
+    const y = viewH - (pct / 100) * viewH;
     return [x, y];
   });
 
   const lineD = buildSmoothPath(coords);
-  const fillD = buildFillPath(coords, width, height);
+  const fillD = buildFillPath(coords, viewW, viewH);
 
+  // theming
   const glowRGB = alertMode ? "255,50,50" : "0,200,255";
   const borderColor = alertMode
     ? "rgba(255,0,0,0.4)"
@@ -82,47 +94,47 @@ export default function HealthGraph({
   const bgColor = alertMode
     ? "rgba(30,0,0,0.45)"
     : "rgba(0,20,30,0.45)";
+  const panelShadow = alertMode
+    ? "0 0 40px rgba(255,0,0,0.2) inset, 0 0 80px rgba(255,0,0,0.05)"
+    : "0 0 40px rgba(0,200,255,0.2) inset, 0 0 80px rgba(0,200,255,0.05)";
 
   return (
+    // outer frame inherits parent sizing, doesn't force a fixed height
     <div
       className={[
+        "w-full h-full flex flex-col",
         "rounded-xl border overflow-hidden",
-        "p-0 bg-transparent", // removes padding + black halo
         alertMode
           ? "border-red-500/40 shadow-[0_0_30px_rgba(255,0,0,0.15)]"
           : "border-cyan-500/30 shadow-[0_0_30px_rgba(0,200,255,0.15)]",
       ].join(" ")}
     >
-      {/* inner fill panel */}
+      {/* inner container flex-grow so svg can stretch */}
       <div
         className={[
-          "rounded-lg border",
-          "overflow-hidden",
+          "flex-1 w-full h-full",
+          "rounded-lg border overflow-hidden",
         ].join(" ")}
         style={{
           borderColor,
           background: bgColor,
-          boxShadow: alertMode
-            ? "0 0 40px rgba(255,0,0,0.2) inset, 0 0 80px rgba(255,0,0,0.05)"
-            : "0 0 40px rgba(0,200,255,0.2) inset, 0 0 80px rgba(0,200,255,0.05)",
+          boxShadow: panelShadow,
         }}
       >
         <svg
-          width="100%"
-          height="100%"
-          viewBox={`0 0 ${width} ${height}`}
+          className="w-full h-full block"
+          viewBox={`0 0 ${viewW} ${viewH}`}
           preserveAspectRatio="none"
-          className="block"
         >
-          {/* grid */}
+          {/* dotted grid */}
           <g stroke="rgba(255,255,255,0.07)" strokeWidth={1}>
             {[0, 0.25, 0.5, 0.75, 1].map((t, i) => {
-              const y = t * height;
+              const y = t * viewH;
               return (
                 <line
                   key={i}
                   x1={0}
-                  x2={width}
+                  x2={viewW}
                   y1={y}
                   y2={y}
                   strokeDasharray="2 4"
@@ -131,7 +143,7 @@ export default function HealthGraph({
             })}
           </g>
 
-          {/* fill area */}
+          {/* fill area under line (if we have enough pts) */}
           {fillD && (
             <path
               d={fillD}
@@ -139,7 +151,7 @@ export default function HealthGraph({
             />
           )}
 
-          {/* main line */}
+          {/* uptime line */}
           <path
             d={lineD}
             fill="none"
@@ -151,7 +163,7 @@ export default function HealthGraph({
             }}
           />
 
-          {/* points */}
+          {/* dots */}
           {coords.map(([x, y], idx) => (
             <circle
               key={idx}
